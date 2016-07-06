@@ -1,0 +1,31 @@
+{
+  "name": "raindrop",
+  "version": "1.0.0",
+  "description": "an web with mean",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluewaitor/raindrop.git"
+  },
+  "keywords": [
+    "mean",
+    "raindrop"
+  ],
+  "author": "bluewaitor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluewaitor/raindrop/issues"
+  },
+  "homepage": "https://github.com/bluewaitor/raindrop#readme",
+  "dependencies": {
+    "cors": "^2.7.1",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "faker": "^3.1.0"
+  }
+}
