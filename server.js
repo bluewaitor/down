@@ -4,6 +4,7 @@ var cors = require('cors');
 
 var app = express();
 app.use(cors());
+app.use(express.static(__dirname+'/public'));
 
 app.get('/random-user', function(req, res){
     var user = faker.helpers.userCard();
