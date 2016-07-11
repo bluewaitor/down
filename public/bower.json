@@ -1,0 +1,20 @@
+{
+  "name": "raindrop",
+  "homepage": "https://github.com/bluewaitor/raindrop",
+  "authors": [
+    "bluewaitor <405622394@qq.com>"
+  ],
+  "description": "client site of raindrop",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7"
+  }
+}
