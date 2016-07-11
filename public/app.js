@@ -19,5 +19,5 @@
         function getUser() {
             return $http.get(API_URL + '/random-user');
         }
-    }])
+    }]);
 })();
