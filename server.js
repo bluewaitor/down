@@ -39,7 +39,7 @@ router.post('/auth', function (req, res) {
         if( !user ){
             res.json({success: false, message: 'Auth failed. User not found.'});
         }else if( user ){
-            if( user.password != req.body.password){
+            if( !user.validPassword(req.body.password)){
                 res.json({success: false, message: 'Auth failed. Wrong password.'});
             }else{
                 var token = jwt.sign(user, app.get('superSecret'), {
@@ -53,35 +53,57 @@ router.post('/auth', function (req, res) {
                 });
             }
         }
-    })
+    });
 });
 
+//注册
 router.post('/signup', function (req, res) {
-    console.log(req.body.name);
-
-
     User.findOne({name: req.body.name}, function (err, user) {
         if(err) throw err;
         if(!user){
-            var user = new User({
-                name: req.body.name,
-                password: req.body.password,
-                admin: 0
-            });
-            user.save(function (err) {
+            var newUser = new User();
+            console.log('111');
+            newUser.name = req.body.name;
+            newUser.password = newUser.generateHash(req.body.password);
+            newUser.admin = 0;
+
+            newUser.save(function (err) {
                 if(err) throw err;
                 res.json({
                     success: true
                 });
-            })
+            });
         }else{
             res.json({
                 success: false,
                 message: 'user name exist'
-            })
+            });
         }
-    })
+    });
 });
+
+router.use(function (req, res, next) {
+    var token = req.body.token || req.query.token || req.header['x-access-token'];
+    if(token){
+        jwt.verify(token, app.get('superSecret'), function (err, decoded) {
+            if(err){
+                return res.json({
+                    success: false,
+                    message: 'Failed to auth token.'
+                });
+            }else{
+                req.decoded = decoded;
+                next();
+            }
+        });
+    }else{
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided'
+        })
+    }
+});
+
 
 
 app.get('/random-user', function(req, res){
@@ -93,5 +115,5 @@ app.get('/random-user', function(req, res){
 app.use(router);
 
 app.listen(port, function () {
-    console.log('app run on localhost:3000');
+    console.log('app run on localhost:'+port);
 });

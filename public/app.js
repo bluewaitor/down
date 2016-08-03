@@ -1,7 +1,7 @@
 (function () {
     'use strict';
     var app = angular.module('app', []);
-    app.constant('API_URL', 'http://localhost:3000');
+    app.constant('API_URL', 'http://localhost:8080');
 
     app.controller('MainCtrl', ['RandomUserFactory',function (RandomUserFactory) {
         var vm = this;
