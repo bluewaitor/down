@@ -62,7 +62,6 @@ router.post('/signup', function (req, res) {
         if(err) throw err;
         if(!user){
             var newUser = new User();
-            console.log('111');
             newUser.name = req.body.name;
             newUser.password = newUser.generateHash(req.body.password);
             newUser.admin = 0;
@@ -89,7 +88,7 @@ router.use(function (req, res, next) {
             if(err){
                 return res.json({
                     success: false,
-                    message: 'Failed to auth token.'
+                    message: err.message
                 });
             }else{
                 req.decoded = decoded;
@@ -100,10 +99,19 @@ router.use(function (req, res, next) {
         return res.status(403).send({
             success: false,
             message: 'No token provided'
-        })
+        });
     }
 });
 
+//需要token才能访问的用router, 不需要token能访问的用app
+router.get('/users', function (req, res) {
+    User.find({},function (err, users) {
+        if(err) throw err;
+        res.json({
+            users: users
+        });
+    })
+});
 
 
 app.get('/random-user', function(req, res){
