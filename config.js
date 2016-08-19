@@ -3,6 +3,6 @@
  */
 
 module.exports = {
-    'secret': 'raindrop',
-    'database': 'mongodb://localhost:27017/raindrop'
+    'secret': 'down',
+    'database': 'mongodb://localhost:27017/down'
 };
