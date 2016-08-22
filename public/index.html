@@ -2,21 +2,23 @@
 <html lang="en" ng-app="app">
 <head>
     <meta charset="UTF-8">
-    <title>RainDrop</title>
+    <title>Down</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 
 </head>
-<body ng-controller="MainCtrl as vm">
+<body>
 
-    <div class="container">
-
-        
-
+    <div class="container" ui-view ng-controller="MainCtrl as vm">
 
     </div>
 
+
     <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="app.js"></script>
+    <script src="controllers/sign-in-ctrl.js"></script>
 </body>
 </html>
