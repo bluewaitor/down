@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    var app = angular.module('app', ['ui.router', 'sign-in']);
+    var app = angular.module('app', ['ui.router']);
     app.constant('API_URL', 'http://localhost:8080');
     app.config(function ($stateProvider, $urlRouterProvider) {
 
@@ -8,11 +8,15 @@
         $stateProvider.
             state('signup', {
                 url: '/signup',
-                templateUrl: '/login/signup.html'
+                templateUrl: '/views/login/signup.html'
             })
             .state('signin', {
                 url: '/signin',
-                templateUrl: '/login/signin.html'
+                templateUrl: '/views/login/signin.html'
+            })
+            .state('profile', {
+                url: '/profile',
+                templateUrl: '/views/profile/index.html'
             })
     });
     app.controller('MainCtrl', ['RandomUserFactory', '$location',function (RandomUserFactory, $location) {
@@ -24,7 +28,7 @@
                 vm.randomUser = response.data;
             });
         }
-        $location.href = '/signup';
+        window.location.href = '#/signin';
         console.log('hahahha');
     }]);
     app.factory('RandomUserFactory', ['$http', 'API_URL', function ($http, API_URL) {

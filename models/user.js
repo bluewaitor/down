@@ -10,7 +10,8 @@ var Schema = mongoose.Schema;
 var UserSchema =  Schema({
     name: String,
     password: String,
-    admin: Boolean
+    admin: Boolean,
+    githubId: String
 });
 
 UserSchema.methods.generateHash = function (password) {

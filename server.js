@@ -9,7 +9,7 @@ var config = require('./config');
 var jwt = require('jsonwebtoken');
 var session = require('express-session');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+
 
 var app = express();
 
@@ -45,55 +45,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+require('./passport/passport')(app, passport);
+
 var router = express.Router();
-
-//序列化用户
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
-        done(err, user);
-    });
-});
-
-passport.use('local-signup', new LocalStrategy({
-    usernameField: 'name',
-    passwordField: 'password',
-    passReqToCallback: true
-}, function (req, name, password, done) {
-    process.nextTick(function () {
-        User.findOne({name: name}, function (err, user) {
-            if(err)
-                return done(err);
-            if(!user){
-                var newUser = new User();
-                newUser.name = name;
-                newUser.password = newUser.generateHash(password);
-                newUser.admin = 0;
-
-                newUser.save(function (err) {
-                    if(err){
-                        throw err;
-                    }
-                    return done(null, newUser, {success: true});
-                });
-            }else{
-                return done(null, false, {success: false, message: 'the name has been taken'});
-            }
-        });
-    });
-}));
-router.post('/signup1', function(req, res){
-    passport.authenticate('local-signup',function (err, user, info) {
-        if(err) throw err;
-        if(user){
-            res.json(user);
-        }
-        res.json(info);
-    })(req, res);
-});
 
 router.post('/auth', function (req, res) {
     User.findOne({name: req.body.name}, function (err, user) {

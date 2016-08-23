@@ -1,8 +1,8 @@
 # Down
 
-this is my first mean project
+this is my first MEAN project
 
-download or clone this project then `cd raindrop` and run `npm install`
+download or clone this project then `cd down` and run `npm install`
 
 `cd public && bower install`
 
