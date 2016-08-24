@@ -1,14 +1,16 @@
 
 var app = angular.module('app');
 
-app.controller('SignInCtrl', ['$http', function ($http) {
-    var vm = this;
-    vm.signIn = function () {
-        var http = $http.post('http://localhost:8080/signin', {name: vm.username, password: vm.password});
-        http.then(function (data) {
-            if(data.data.success){
-                window.location.href = '#/profile';
-            }
+app.controller('SignInCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
+    if (auth.isSignIn()){
+        console.log('1111');
+        $state.go('profile');
+    }
+    $scope.signIn = function () {
+        auth.logIn($scope.user).error(function(error){
+            $scope.error = error;
+        }).then(function(){
+            $state.go('profile');
         });
     }
 }]);

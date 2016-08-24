@@ -1,5 +1,13 @@
-<div class="jumbotron" ng-controller="ProfileCtrl as vm">
+<div class="jumbotron" ng-controller="ProfileCtrl">
 
-    fjadlfjla
+    <form>
+        <input type="text" placeholder="name" ng-model="name" class="form-control">
+        <input type="text" placeholder="url" ng-model="url" class="form-control">
+        <button ng-click="addUrl()">add</button>
+        <button ng-click="getUrl()">get</button>
+    </form>
 
+    {{newUrl}}
+    {{getUrl}}
+    <button class="btn btn-default" ng-click="signOut()">退出</button>
 </div>

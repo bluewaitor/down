@@ -3,7 +3,6 @@
     var app = angular.module('app', ['ui.router']);
     app.constant('API_URL', 'http://localhost:8080');
     app.config(function ($stateProvider, $urlRouterProvider) {
-
         $urlRouterProvider.otherwise('/');
         $stateProvider.
             state('signup', {
@@ -17,9 +16,51 @@
             .state('profile', {
                 url: '/profile',
                 templateUrl: '/views/profile/index.html'
-            })
+            });
     });
-    app.controller('MainCtrl', ['RandomUserFactory', '$location',function (RandomUserFactory, $location) {
+    app.factory('auth', ['$http', '$window', function ($http, $window) {
+        var auth = {};
+        var tokenIndex = 'downtoken';
+        auth.saveToken = function (token) {
+            $window.localStorage[tokenIndex] = token;
+        };
+        auth.getToken = function () {
+            return $window.localStorage[tokenIndex];
+        };
+        auth.isSignIn = function () {
+            var token = auth.getToken();
+            if (token) {
+                var payload = JSON.parse($window.atob(token.split('.')[1]));
+                console.log(payload.exp);
+                return payload.exp > Date.now() / 1000;
+            } else {
+                return false;
+            }
+        };
+        auth.currentUser = function(){
+            if(auth.isSignIn()){
+                var token = auth.getToken();
+                var payload = JSON.parse($window.atob(token.split('.')[1]));
+                return payload.username;
+            }
+        };
+        auth.register = function(user){
+            return $http.post('/signup1', user).success(function(data){
+                auth.saveToken(data.token);
+            });
+        };
+        auth.logIn = function(user){
+            return $http.post('/signin', user).success(function(data){
+                auth.saveToken(data.token);
+            });
+        };
+        auth.logOut = function(){
+            $window.localStorage.removeItem(tokenIndex);
+        };
+        return auth;
+    }]);
+
+    app.controller('MainCtrl', ['RandomUserFactory', '$location', 'auth', '$state',function (RandomUserFactory, $location, auth, $state) {
         var vm = this;
         vm.getRandomUser = getRandomUser;
         vm.randomNumber = Math.random() * 10 + 1;
@@ -28,8 +69,11 @@
                 vm.randomUser = response.data;
             });
         }
-        window.location.href = '#/signin';
-        console.log('hahahha');
+        if(auth.isSignIn()){
+            $state.go('profile');
+        }else{
+            $state.go('signin');
+        }
     }]);
     app.factory('RandomUserFactory', ['$http', 'API_URL', function ($http, API_URL) {
         return {

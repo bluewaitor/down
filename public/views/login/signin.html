@@ -1,11 +1,11 @@
-<div class="panel panel-default" ng-controller="SignInCtrl as vm">
+<div class="panel panel-default" ng-controller="SignInCtrl">
     <div class="panel-heading">
         <h3 class="panel-title">登录</h3>
     </div>
     <div class="panel-body">
-        <input type="text" placeholder="请输入用户名" class="form-control" ng-model="vm.username">
-        <input type="password" placeholder="请输入密码" class="form-control" ng-model="vm.password">
-        <button class="btn btn-primary btn-block" ng-click="vm.signIn();">登录</button>
+        <input type="text" placeholder="请输入用户名" class="form-control" ng-model="user.name">
+        <input type="password" placeholder="请输入密码" class="form-control" ng-model="user.password">
+        <button class="btn btn-primary btn-block" ng-click="signIn();">登录</button>
         <a href="#/signup">注册</a>
         <a href="/auth/github">github登录</a>
     </div>

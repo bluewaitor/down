@@ -1,7 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
 var jwt = require('jsonwebtoken');
-var GithubStrategy = require('passport-github2').Strategy;
+
 module.exports = function (app, passport) {
 
     //序列化用户
@@ -30,7 +30,6 @@ module.exports = function (app, passport) {
                     newUser.name = name;
                     newUser.password = newUser.generateHash(password);
                     newUser.admin = 0;
-
                     newUser.save(function (err) {
                         if (err) {
                             throw err;
@@ -38,7 +37,7 @@ module.exports = function (app, passport) {
                         return done(null, newUser, {success: true});
                     });
                 } else {
-                    return done(null, false, {success: false, message: 'the name has been taken'});
+                    return done(null, false, {success: false, message: '名字已经被取了'});
                 }
             });
         });
@@ -63,28 +62,7 @@ module.exports = function (app, passport) {
         });
     }));
 
-    passport.use(new GithubStrategy({
-            clientID: "",
-            clientSecret: "",
-            callbackURL: "http://127.0.0.1:8080/auth/github/callback"
-        },
-        function(accessToken, refreshToken, profile, done) {
-            console.log(profile);
-            return done(null, profile);
-        }
-    ));
-
-    app.get('/auth/github',
-        passport.authenticate('github', { scope: [ 'user:email' ] }));
-
-    app.get('/auth/github/callback',
-        passport.authenticate('github', { failureRedirect: '/login' }),
-        function(req, res) {
-            // Successful authentication, redirect home.
-            res.redirect('/');
-        });
-
-    app.post('/signup1', function (req, res) {
+    app.post('/signup', function (req, res) {
         passport.authenticate('local-signup', function (err, user, info) {
             if (err) throw err;
             if (user) {
@@ -111,5 +89,5 @@ module.exports = function (app, passport) {
                 res.json(info);
             }
         })(req, res);
-    })
+    });
 };
