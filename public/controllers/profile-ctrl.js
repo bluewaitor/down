@@ -10,7 +10,7 @@ app.controller('ProfileCtrl', ['$scope', 'auth', '$state', '$http', function ($s
 
     $scope.addUrl = function () {
         $http.post('/api/url', {
-            token: auth.getToken(),
+            // token: auth.getToken(),
             name: $scope.name,
             url: $scope.url
         }).success(function (data) {
@@ -20,12 +20,8 @@ app.controller('ProfileCtrl', ['$scope', 'auth', '$state', '$http', function ($s
 
     $scope.getUrl = function () {
         console.log('get');
-        $http.get('/api/url', {
-            params: {
-                token: auth.getToken()
-            }
-        }).success(function (data) {
-            $scope.getUrl = data;
+        $http.get('/api/url').success(function (data) {
+            $scope.getedUrl = data;
         });
-    }
+    };
 }]);

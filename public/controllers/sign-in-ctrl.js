@@ -1,15 +1,13 @@
 
 var app = angular.module('app');
 
-app.controller('SignInCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
+app.controller('SignInCtrl', ['$scope', '$state', 'auth', '$http', function ($scope, $state, auth, $http) {
     if (auth.isSignIn()){
-        console.log('1111');
         $state.go('profile');
     }
     $scope.signIn = function () {
-        auth.logIn($scope.user).error(function(error){
-            $scope.error = error;
-        }).then(function(){
+        $http.post('/signin', $scope.user).success(function(data){
+            auth.saveToken(data.token);
             $state.go('profile');
         });
     }
